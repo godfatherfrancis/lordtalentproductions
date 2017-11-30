@@ -138,7 +138,7 @@ h2 { font-size: 87.5%; }
 }
 
 .album-art {
-    background: #fff url("http://d16em58ido2uc5.cloudfront.net/thebeginning/LT.jpg") center/cover no-repeat;
+    background: #fff url("https://d16em58ido2uc5.cloudfront.net/thebeginning/LT.jpg") center/cover no-repeat;
     height: 315px;
     position: relative;
     width: 315px;
@@ -152,7 +152,7 @@ h2 { font-size: 87.5%; }
     -webkit-transition: all 500ms;
     -moz-transition: all 500ms;
     transition: all 500ms;
-    background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/83141/vinyl.png"), url("http://d16em58ido2uc5.cloudfront.net/thebeginning/LT.jpg");
+    background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/83141/vinyl.png"), url("https://d16em58ido2uc5.cloudfront.net/thebeginning/LT.jpg");
     background-position: center, center;
     background-size: cover, 40% auto;
     background-repeat: no-repeat;
