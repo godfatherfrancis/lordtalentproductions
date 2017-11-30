@@ -10,7 +10,7 @@
         $('.music-player-container').toggleClass('is-playing');
 
     });*/
-    var cloudfrontUrl = 'http://d16em58ido2uc5.cloudfront.net';
+    var cloudfrontUrl = 'https://d16em58ido2uc5.cloudfront.net';
     // httpGetAsync(cloudfrontUrl);
 
     function httpGetAsync(theUrl, callback) {
