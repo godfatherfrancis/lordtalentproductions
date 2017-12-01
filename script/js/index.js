@@ -2,50 +2,79 @@
 
 // $(document).ready(function() {
 
-    // Pause/Play functionality
-    /*var playButton = $('.control-play'),
-        album = $('.album');
+// TEST Pause/Play functionality
+function test() {
 
-    playButton.on('click', function() {
-        $('.music-player-container').toggleClass('is-playing');
+    $('button').on('click', function () {
 
-    });*/
-    var cloudfrontUrl = 'https://d16em58ido2uc5.cloudfront.net';
-    // httpGetAsync(cloudfrontUrl);
+        var player = $('.music-player-container');
+        var self = $(this);
 
-    function httpGetAsync(theUrl, callback) {
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-                callback(xmlHttp.responseText);
-        };
-        xmlHttp.open("GET", theUrl, true); // true for asynchronous
-        xmlHttp.send(null);
-    }
+        if (self.hasClass('play-pause') && player.hasClass('paused')) {
+            player.removeClass('paused').addClass('playing');
+            soundManager.play('talent', {
+                onfinish: function () {
+                    loadtrack();
+                }
+            });
+            // getCurrentTime();
+        } else if (self.hasClass('play-pause') && player.hasClass('playing')) {
+            player.removeClass('playing').addClass('paused');
+            soundManager.pause('talent');
+        }
+    });
 
-    $.ajax({
-        type: "GET",
-        url: cloudfrontUrl,
-        dataType: "xml",
-        success: function(xml){
-        $(xml).find('Content').each(function(){
-            var sKey = $(this).find('Key').text();
-            console.log("Key: " + sKey);
+}
+
+var thebeginningtracklist = [],
+    index,
+    currentTrack = 0,
+    cloudfrontUrl = 'https://d16em58ido2uc5.cloudfront.net';
+
+$.ajax({
+    type: "GET",
+    url: cloudfrontUrl,
+    dataType: "xml",
+    success: function(xml){
+        var i = 0,
+            t = 0;
+        $(xml).find('Key').each(function () {
+                var sKey = $(this).text();
+                if (i >= 2) {
+                    thebeginningtracklist[t] = sKey;
+                    // console.log(sKey);
+                    t++;
+                }
+                i++;
         });
+        index = t;
     },
     error: function() {
         alert("An error occurred while processing XML file.");
     }
-    });
+});
 
+$(document).ajaxStop(function() {
+    // place code to be executed on completion of last outstanding ajax call here
+    console.log(thebeginningtracklist.length + " tracks" + ' index ' + index);
+    console.log("First track " + thebeginningtracklist[0]);
+    console.log("Last track " + thebeginningtracklist[index-1]);
+    readyplayer();
+    // test();
 
-/*var player = $('.music-player-container'),
+});
+
+function readyplayer() {
+
+    var player = $('.music-player-container'),
         audio = player.find('audio'),
         duration = $('.duration'),
         currentTime = $('.current-time'),
         progressBar = $('.progress span'),
         mouseDown = false,
         rewind, showCurrentTime;
+
+    // console.log("1 - " + $(audio).attr("src")); // get attr value
 
     function secsToMins(time) {
         var int = Math.floor(time),
@@ -70,18 +99,50 @@
         }
     }
 
-    audio.on('loadedmetadata', function() {
+    audio.on('loadedmetadata', function () {
         var durationFormatted = secsToMins(audio[0].duration);
         duration.text(durationFormatted);
-    }).on('ended', function() {
+    }).on('ended', function () {
         if ($('.repeat').hasClass('active')) {
             audio[0].currentTime = 0;
             audio[0].play();
         } else {
             player.removeClass('playing').addClass('paused');
             audio[0].currentTime = 0;
+
+            loadnexttrack();
         }
     });
+
+    function loadnexttrack() {
+        currentTrack++;
+        if (currentTrack === index) {
+            currentTrack = 0;
+        }
+
+        document.getElementsByClassName("artist-name")[0].innerHTML = "Track 0" + currentTrack;
+        var loadnexttrack = cloudfrontUrl + '/' + thebeginningtracklist[currentTrack];
+        console.log(loadnexttrack);
+        $(audio).attr("src", loadnexttrack);
+        player.removeClass('paused').addClass('playing');
+        audio[0].play();
+    }
+
+    function loadprevtrack() {
+        if (currentTrack === 0) {
+            // do nothing
+        } else {
+            currentTrack--;
+            if (currentTrack === index) {
+                currentTrack = 0;
+            }
+            var loadnexttrack = cloudfrontUrl + '/' + thebeginningtracklist[currentTrack];
+            console.log(loadnexttrack);
+            $(audio).attr("src", loadnexttrack);
+            player.removeClass('paused').addClass('playing');
+            audio[0].play();
+        }
+    }
 
     $('button').on('click', function() {
         var self = $(this);
@@ -90,6 +151,8 @@
             player.removeClass('paused').addClass('playing');
             audio[0].play();
             getCurrentTime();
+            console.log(thebeginningtracklist[0].toString());
+            document.getElementsByClassName("artist-name")[0].innerHTML = "Track 00";
         } else if (self.hasClass('play-pause') && player.hasClass('playing')) {
             player.removeClass('playing').addClass('paused');
             audio[0].pause();
@@ -98,7 +161,19 @@
         if (self.hasClass('shuffle') || self.hasClass('repeat')) {
             self.toggleClass('active');
         }
-    }).on('mousedown', function() {
+
+        // Skip
+        if (self.hasClass('ff')) {
+            player.addClass('ffing');
+            loadnexttrack();
+        }
+
+        // Rewind
+        if (self.hasClass('rw')) {
+            player.addClass('rwing');
+            loadprevtrack();
+        }
+    })/*.on('mousedown', function() {
         var self = $(this);
 
         if (self.hasClass('ff')) {
@@ -122,7 +197,7 @@
             player.removeClass('rwing');
             clearInterval(rewind);
         }
-    });
+    })*/;
 
     player.on('mousedown mouseup', function() {
         mouseDown = !mouseDown;
@@ -140,20 +215,5 @@
                 progressBar.css('width', offsetPercentage * 100 + '%');
             }
         }
-    });*/
-// });
-
-/*
-(function($) {
-    $(document).ready(function() {
-
-        // Pause/Play functionality
-        var playButton = $('.control-play'),
-            album = $('.album');
-
-        playButton.on('click', function() {
-            $('.music-player-container').toggleClass('is-playing');
-
-        });
     });
-})(jQuery);*/
+}
