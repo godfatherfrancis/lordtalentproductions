@@ -26,6 +26,26 @@ function test() {
 
 }
 
+var ping = new Audio("https://d16em58ido2uc5.cloudfront.net/thebeginning/thebeginning03.mp3"),
+testindex = 0;
+
+document.querySelector(".music-player-container").addEventListener("click", function() {
+
+    console.log("ping clicked, play ping sound:");
+    if(testindex >= 1) {
+        ping.pause();
+        ping = new Audio("https://d16em58ido2uc5.cloudfront.net/" + thebeginningtracklist[testindex]);
+        ping.play();
+        $('.album').removeClass('paused').addClass('playing');
+    } else {
+        ping.play();
+        $('.album').removeClass('paused').addClass('playing');
+    }
+    testindex++;
+});
+
+
+
 var thebeginningtracklist = [],
     index,
     currentTrack = 0,
