@@ -1,55 +1,28 @@
-
-
 // $(document).ready(function() {
 
-// TEST Pause/Play functionality
-function test() {
-
-    $('button').on('click', function () {
-
-        var player = $('.music-player-container');
-        var self = $(this);
-
-        if (self.hasClass('play-pause') && player.hasClass('paused')) {
-            player.removeClass('paused').addClass('playing');
-            soundManager.play('talent', {
-                onfinish: function () {
-                    loadtrack();
-                }
-            });
-            // getCurrentTime();
-        } else if (self.hasClass('play-pause') && player.hasClass('playing')) {
-            player.removeClass('playing').addClass('paused');
-            soundManager.pause('talent');
-        }
-    });
-
-}
-
-var ping = new Audio("https://d16em58ido2uc5.cloudfront.net/thebeginning/thebeginning03.mp3"),
-testindex = 0;
+var thebeginningtracklist = [],
+    index,
+    currentTrack = 0,
+    cloudfrontUrl = 'https://d16em58ido2uc5.cloudfront.net',
+    ping = new Audio("https://d16em58ido2uc5.cloudfront.net/thebeginning/thebeginning00.mp3"),
+    testindex = 0,
+    loadnexttrack = cloudfrontUrl + '/' + thebeginningtracklist[testindex];
 
 document.querySelector(".music-player-container").addEventListener("click", function() {
 
     console.log("ping clicked, play ping sound:");
     if(testindex >= 1) {
         ping.pause();
-        ping = new Audio("https://d16em58ido2uc5.cloudfront.net/" + thebeginningtracklist[testindex]);
+        ping = new Audio(loadnexttrack);
         ping.play();
         $('.album').removeClass('paused').addClass('playing');
     } else {
+        $("#play").hide();
         ping.play();
         $('.album').removeClass('paused').addClass('playing');
     }
     testindex++;
 });
-
-
-
-var thebeginningtracklist = [],
-    index,
-    currentTrack = 0,
-    cloudfrontUrl = 'https://d16em58ido2uc5.cloudfront.net';
 
 $.ajax({
     type: "GET",
@@ -79,8 +52,7 @@ $(document).ajaxStop(function() {
     console.log(thebeginningtracklist.length + " tracks" + ' index ' + index);
     console.log("First track " + thebeginningtracklist[0]);
     console.log("Last track " + thebeginningtracklist[index-1]);
-    readyplayer();
-    // test();
+    // readyplayer();
 
 });
 

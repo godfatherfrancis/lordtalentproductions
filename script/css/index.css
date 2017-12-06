@@ -9,6 +9,13 @@ body {
     font-family: 'Raleway', sans-serif;
 }
 
+#play {
+    z-index: 11;
+    position: absolute;
+    top: 21px;
+    margin-left: 94px;
+}
+
 .music-player-container {
     -webkit-transform: translate(-50%, -50%);
     -moz-transform: translate(-50%, -50%);
@@ -21,16 +28,6 @@ body {
     min-width: 500px;
     left: 50%;
     top: 50%;
-}
-
-.music-player {
-    background-color: #eee;
-    height: 370px;
-    padding: 40px 250px 40px 40px;
-    position: absolute;
-    text-align: right;
-    width: 500px;
-    z-index: 3;
 }
 
 .album {
@@ -72,12 +69,9 @@ body {
     z-index: 5;
     will-change: transform, top;
 }
+
 .playing .vinyl {
     top: 50%;
-}
-
-.music-player-controls {
-    text-align: center;
 }
 
 [class^="control-"] {
