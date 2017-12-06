@@ -4,14 +4,13 @@ var thebeginningtracklist = [],
     index,
     currentTrack = 0,
     cloudfrontUrl = 'https://d16em58ido2uc5.cloudfront.net',
-    ping = new Audio("https://d16em58ido2uc5.cloudfront.net/thebeginning/thebeginning00.mp3"),
-    testindex = 0,
-    loadnexttrack = cloudfrontUrl + '/' + thebeginningtracklist[testindex];
+    ping = new Audio("https://d16em58ido2uc5.cloudfront.net/thebeginning/thebeginning00.mp3");
 
 document.querySelector(".music-player-container").addEventListener("click", function() {
 
     console.log("ping clicked, play ping sound:");
-    if(testindex >= 1) {
+    if(currentTrack >= 1) {
+        var loadnexttrack = cloudfrontUrl + '/' + thebeginningtracklist[currentTrack];
         ping.pause();
         ping = new Audio(loadnexttrack);
         ping.play();
@@ -21,7 +20,7 @@ document.querySelector(".music-player-container").addEventListener("click", func
         $("#play").hide();
         $('.album').removeClass('paused').addClass('playing');
     }
-    testindex++;
+    currentTrack++;
 });
 
 $.ajax({
@@ -49,7 +48,7 @@ $.ajax({
 
 $(document).ajaxStop(function() {
     // place code to be executed on completion of last outstanding ajax call here
-    console.log(thebeginningtracklist.length + " tracks" + ' index ' + index);
+    console.log(thebeginningtracklist.length + " tracks |" + ' index ' + index);
     console.log("First track " + thebeginningtracklist[0]);
     console.log("Last track " + thebeginningtracklist[index-1]);
     // readyplayer();
