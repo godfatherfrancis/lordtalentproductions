@@ -17,8 +17,8 @@ document.querySelector(".music-player-container").addEventListener("click", func
         ping.play();
         $('.album').removeClass('paused').addClass('playing');
     } else {
-        $("#play").hide();
         ping.play();
+        $("#play").hide();
         $('.album').removeClass('paused').addClass('playing');
     }
     testindex++;

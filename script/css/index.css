@@ -11,9 +11,10 @@ body {
 
 #play {
     z-index: 11;
-    position: absolute;
+    position: relative;
     top: 21px;
     margin-left: 94px;
+    margin-top: -30em;
 }
 
 .music-player-container {
